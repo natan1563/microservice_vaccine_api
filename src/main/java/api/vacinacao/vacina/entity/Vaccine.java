@@ -15,7 +15,6 @@ import java.time.LocalDate;
 @Builder
 public class Vaccine {
     @Id
-    @JsonIgnore
     private String id;
     private String manufacturer;
     private String batch;
