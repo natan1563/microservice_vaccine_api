@@ -1,5 +1,6 @@
 package api.vacinacao.vacina.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @Builder
 public class Vaccine {
     @Id
+    @JsonIgnore
     private String id;
     private String manufacturer;
     private String batch;
