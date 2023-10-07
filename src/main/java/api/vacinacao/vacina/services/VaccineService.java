@@ -18,13 +18,13 @@ public class VaccineService {
     private VaccineRepository vaccineRepository;
 
     public Vaccine registerVaccine(VaccineDTO vaccineDTO) {
-        return Vaccine.builder()
+        return vaccineRepository.insert(Vaccine.builder()
                 .manufacturer(vaccineDTO.getManufacturer())
                 .batch(vaccineDTO.getBatch())
                 .validateDate(vaccineDTO.getValidateDate())
                 .amountOfDose(vaccineDTO.getAmountOfDose())
                 .intervalBetweenDoses(vaccineDTO.getIntervalBetweenDoses())
-                .build();
+                .build());
     }
 
     @Transactional(readOnly = true)
