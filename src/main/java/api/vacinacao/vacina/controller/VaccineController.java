@@ -1,7 +1,6 @@
 package api.vacinacao.vacina.controller;
 
 import api.vacinacao.vacina.entity.Vaccine;
-import api.vacinacao.vacina.repository.VaccineRepository;
 import api.vacinacao.vacina.services.VaccineService;
 import api.vacinacao.vacina.services.dto.VaccineDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/vacina")
+@RequestMapping("/vaccine")
 public class VaccineController {
 
     @Autowired
@@ -30,6 +29,12 @@ public class VaccineController {
         return vaccineService.getVaccineById(id).map(ResponseEntity::ok).orElseGet(
                 () -> ResponseEntity.notFound().build()
         );
+    }
+
+    @PostMapping("/mock-vaccines")
+    public ResponseEntity<Void> mockVaccines() {
+        vaccineService.mockVaccines();
+        return ResponseEntity.created(null).build();
     }
 
     @PostMapping

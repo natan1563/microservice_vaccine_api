@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,5 +37,27 @@ public class VaccineService {
     @Transactional(readOnly = true)
     public Optional<Vaccine> getVaccineById(String id) {
         return vaccineRepository.findById(id);
+    }
+
+    public void mockVaccines() {
+        List<VaccineDTO> mockVaccines = new ArrayList<>();
+        mockVaccines.add(
+                new VaccineDTO("Pfizer", "PF12345", LocalDate.of(2023, 12, 31), 2, 21)
+        );
+        mockVaccines.add(
+                new VaccineDTO("Moderna", "MD67890", LocalDate.of(2023, 11, 30), 2, 28)
+        );
+        mockVaccines.add(
+                new VaccineDTO("AstraZeneca", "AZ45678", LocalDate.of(2023, 10, 31), 2, 12)
+        );
+        mockVaccines.add(
+                new VaccineDTO("Generic Pharma", "FLU2023", LocalDate.of(2023, 11, 15), 1, 0)
+        );
+        mockVaccines.add(
+                new VaccineDTO("Johnson & Johnson", "JJ78901", LocalDate.of(2023, 9, 30), 1, 0)
+        );
+        mockVaccines.forEach(
+                this::registerVaccine
+        );
     }
 }
