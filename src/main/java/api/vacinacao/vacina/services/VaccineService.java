@@ -11,6 +11,7 @@ import org.springframework.web.client.ResourceAccessException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,25 +33,14 @@ public class VaccineService {
     }
 
     public void mockVaccines() {
-        List<Vaccine> mockVaccines = new ArrayList<>();
-        mockVaccines.add(
-                new Vaccine("Pfizer", "PF12345", LocalDate.of(2023, 12, 31), 2, 21)
-        );
-        mockVaccines.add(
-                new Vaccine("Moderna", "MD67890", LocalDate.of(2023, 11, 30), 2, 28)
-        );
-        mockVaccines.add(
-                new Vaccine("AstraZeneca", "AZ45678", LocalDate.of(2023, 10, 31), 2, 12)
-        );
-        mockVaccines.add(
-                new Vaccine("Generic Pharma", "FLU2023", LocalDate.of(2023, 11, 15), 1, 0)
-        );
-        mockVaccines.add(
+        List<Vaccine> mockVaccines = Arrays.asList(
+                new Vaccine("Pfizer", "PF12345", LocalDate.of(2023, 12, 31), 2, 21),
+                new Vaccine("Moderna", "MD67890", LocalDate.of(2023, 11, 30), 2, 28),
+                new Vaccine("AstraZeneca", "AZ45678", LocalDate.of(2023, 10, 31), 2, 12),
+                new Vaccine("Generic Pharma", "FLU2023", LocalDate.of(2023, 11, 15), 1, 0),
                 new Vaccine("Johnson & Johnson", "JJ78901", LocalDate.of(2023, 9, 30), 1, 0)
         );
-        mockVaccines.forEach(
-                this::registerVaccine
-        );
+        mockVaccines.forEach(this::registerVaccine);
     }
 
     @Transactional(readOnly = true)
