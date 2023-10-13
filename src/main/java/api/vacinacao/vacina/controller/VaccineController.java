@@ -1,8 +1,8 @@
 package api.vacinacao.vacina.controller;
 
 import api.vacinacao.vacina.entity.Vaccine;
+import api.vacinacao.vacina.exception.ResourceNotFoundException;
 import api.vacinacao.vacina.services.VaccineService;
-import api.vacinacao.vacina.services.dto.VaccineDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,16 +19,14 @@ public class VaccineController {
     @Autowired
     private VaccineService vaccineService;
 
-    @GetMapping
-    public ResponseEntity<List<Vaccine>> getAll() {
-        return ResponseEntity.ok().body(vaccineService.getAllVaccines());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Vaccine> getVaccineById(@PathVariable String id) {
-        return vaccineService.getVaccineById(id).map(ResponseEntity::ok).orElseGet(
-                () -> ResponseEntity.notFound().build()
-        );
+    @PostMapping
+    public ResponseEntity<Vaccine> registerVaccine(@RequestBody @Valid Vaccine vaccine) {
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .build()
+                .toUri();
+        return ResponseEntity.created(location).body(vaccineService.registerVaccine(vaccine));
     }
 
     @PostMapping("/mock-vaccines")
@@ -37,13 +35,25 @@ public class VaccineController {
         return ResponseEntity.created(null).build();
     }
 
-    @PostMapping
-    public ResponseEntity<Vaccine> registerVaccine(@RequestBody @Valid VaccineDTO vaccineDTO) {
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .build()
-                .toUri();
-        return ResponseEntity.created(location).body(vaccineService.registerVaccine(vaccineDTO));
+    @GetMapping
+    public ResponseEntity<List<Vaccine>> getAll() {
+        return ResponseEntity.ok().body(vaccineService.getAllVaccines());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Vaccine> getVaccineById(@PathVariable String id) throws ResourceNotFoundException {
+        return ResponseEntity.ok().body(vaccineService.getVaccineById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Vaccine> update(@RequestBody @Valid Vaccine newVaccine, @PathVariable String id) throws ResourceNotFoundException {
+        return ResponseEntity.ok().body(vaccineService.update(newVaccine, id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) throws ResourceNotFoundException {
+        vaccineService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
