@@ -1,6 +1,7 @@
 package api.vacinacao.vacina.controller;
 
 import api.vacinacao.vacina.entity.Vaccine;
+import api.vacinacao.vacina.exception.RegisterBadRequestException;
 import api.vacinacao.vacina.exception.ResourceNotFoundException;
 import api.vacinacao.vacina.services.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class VaccineController {
     private VaccineService vaccineService;
 
     @PostMapping
-    public ResponseEntity<Vaccine> registerVaccine(@RequestBody @Valid Vaccine vaccine) {
+    public ResponseEntity<Vaccine> registerVaccine(@RequestBody @Valid Vaccine vaccine) throws RegisterBadRequestException {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

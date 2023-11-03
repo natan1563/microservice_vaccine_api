@@ -1,6 +1,7 @@
 package api.vacinacao.vacina.services;
 
 import api.vacinacao.vacina.entity.Vaccine;
+import api.vacinacao.vacina.exception.RegisterBadRequestException;
 import api.vacinacao.vacina.exception.ResourceNotFoundException;
 import api.vacinacao.vacina.repository.VaccineRepository;
 import org.springframework.beans.BeanUtils;
@@ -22,14 +23,11 @@ public class VaccineService {
     @Autowired
     private VaccineRepository vaccineRepository;
 
-    public Vaccine registerVaccine(Vaccine vaccine) {
-        return vaccineRepository.insert(Vaccine.builder()
-                .manufacturer(vaccine.getManufacturer())
-                .batch(vaccine.getBatch())
-                .validateDate(vaccine.getValidateDate())
-                .amountOfDose(vaccine.getAmountOfDose())
-                .intervalBetweenDoses(vaccine.getIntervalBetweenDoses())
-                .build());
+    public Vaccine registerVaccine(Vaccine vaccine) throws RegisterBadRequestException {
+        if (vaccine.getAmountOfDose() > 1 && vaccine.getIntervalBetweenDoses() == null) {
+            throw new RegisterBadRequestException();
+        }
+        return vaccineRepository.insert(vaccine);
     }
 
     public void mockVaccines() {
@@ -40,7 +38,7 @@ public class VaccineService {
                 new Vaccine("Generic Pharma", "FLU2023", LocalDate.of(2023, 11, 15), 1, 0),
                 new Vaccine("Johnson & Johnson", "JJ78901", LocalDate.of(2023, 9, 30), 1, 0)
         );
-        mockVaccines.forEach(this::registerVaccine);
+        mockVaccines.forEach(vaccine -> vaccineRepository.insert(vaccine));
     }
 
     @Transactional(readOnly = true)
@@ -50,32 +48,33 @@ public class VaccineService {
 
     @Transactional(readOnly = true)
     public Vaccine getVaccineById(String id) throws ResourceNotFoundException {
-        Optional<Vaccine> vaccineOptional = findById(id);
-        verifyIfIsEmpty(vaccineOptional);
-        return vaccineOptional.get();
+        return findById(id);
     }
 
     public Vaccine update(Vaccine newVaccine ,String id) throws ResourceNotFoundException {
-        Optional<Vaccine> vaccineOptional = findById(id);
-        verifyIfIsEmpty(vaccineOptional);
-        BeanUtils.copyProperties(newVaccine, vaccineOptional.get());
-        return vaccineRepository.save(vaccineOptional.get());
+        Vaccine vaccine = findById(id);
+        vaccine.setBatch(newVaccine.getBatch());
+        vaccine.setValidateDate(newVaccine.getValidateDate());
+        vaccine.setAmountOfDose(newVaccine.getAmountOfDose());
+        vaccine.setManufacturer(newVaccine.getManufacturer());
+        vaccine.setIntervalBetweenDoses(newVaccine.getIntervalBetweenDoses());
+
+//        BeanUtils.copyProperties(newVaccine, vaccineOptional.get());
+        return vaccineRepository.save(vaccine);
     }
 
     public void delete(String id) throws ResourceNotFoundException {
-        Optional<Vaccine> vaccineOptional = findById(id);
-        verifyIfIsEmpty(vaccineOptional);
+        findById(id);
         vaccineRepository.deleteById(id);
     }
 
-    private Optional<Vaccine> findById(String id) {
-        return vaccineRepository.findById(id);
-    }
+    private Vaccine findById(String id) throws ResourceNotFoundException {
+        Optional<Vaccine> vaccine = vaccineRepository.findById(id);
 
-    private void verifyIfIsEmpty(Optional<Vaccine> vaccineOptional) throws ResourceNotFoundException {
-        if (vaccineOptional.isEmpty()) {
+        if (vaccine.isEmpty()) {
             throw new ResourceNotFoundException();
         }
-    }
 
+        return vaccine.get();
+    }
 }
