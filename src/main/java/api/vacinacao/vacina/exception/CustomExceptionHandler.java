@@ -34,4 +34,13 @@ public class CustomExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(RegisterBadRequestException.class)
+    public ResponseEntity<Object> handleRegisterBadRequest(RegisterBadRequestException ex) {
+        Map<String, Object> body = new HashMap<>();
+
+        body.put("mensagem", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 }

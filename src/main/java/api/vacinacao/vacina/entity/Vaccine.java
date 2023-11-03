@@ -32,7 +32,6 @@ public class Vaccine {
     @Min(value = 1, message = "O número de doses da vacina deve ser maior que 0!")
     private Integer amountOfDose;
 
-    @NotNull(message = "O intervalo mínimo entre doses em dias da vacina não foi informado!")
     @Min(value = 1, message = "O intervalo mínimo entre doses em dias deve ser maior que 0!")
     private Integer intervalBetweenDoses;
 
