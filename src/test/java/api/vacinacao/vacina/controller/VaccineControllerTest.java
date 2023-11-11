@@ -172,4 +172,31 @@ public class VaccineControllerTest {
 
         verify(vaccineService, times(1)).registerVaccine(Mockito.any(Vaccine.class));
     }
+
+    @Test
+    @DisplayName("Deve atualizar uma vacina")
+    void testAtualizarVacina() throws Exception, ResourceNotFoundException {
+        Vaccine vaccine = new Vaccine();
+        vaccine.setId("teste");
+        vaccine.setManufacturer("Pfizer");
+        vaccine.setBatch("LD245");
+        vaccine.setValidateDate(LocalDate.of(2023, 12, 25));
+        vaccine.setAmountOfDose(2);
+        vaccine.setIntervalBetweenDoses(15);
+
+        Mockito.when(vaccineService.update(Mockito.any(Vaccine.class),Mockito.anyString())).thenReturn(vaccine);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/vaccine/" + vaccine.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(vaccine)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.manufacturer").value(vaccine.getManufacturer()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.batch").value(vaccine.getBatch()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.validateDate.length()").value(3))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.amountOfDose").value(vaccine.getAmountOfDose()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.intervalBetweenDoses").value(vaccine.getIntervalBetweenDoses()));
+
+        verify(vaccineService, times(1)).update(Mockito.any(Vaccine.class),Mockito.eq(vaccine.getId()));
+    }
 }
