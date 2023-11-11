@@ -3,7 +3,9 @@ package api.vacinacao.vacina.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -25,7 +27,6 @@ public class Vaccine {
     private String batch;
 
     @NotNull(message = "A data de validade da vacina não foi informada!")
-    @JsonFormat(pattern = "YYYY-MM-dd")
     private LocalDate validateDate;
 
     @NotNull(message = "O número de doses da vacina não foi informado!")

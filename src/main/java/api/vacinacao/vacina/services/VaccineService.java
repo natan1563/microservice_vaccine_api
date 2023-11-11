@@ -54,7 +54,7 @@ public class VaccineService {
     public Vaccine update(Vaccine newVaccine ,String id) throws ResourceNotFoundException {
         Vaccine vaccine = findById(id);
         vaccine.setBatch(newVaccine.getBatch());
-        vaccine.setValidateDate(newVaccine.getValidateDate());
+//        vaccine.setValidateDate(newVaccine.getValidateDate());
         vaccine.setAmountOfDose(newVaccine.getAmountOfDose());
         vaccine.setManufacturer(newVaccine.getManufacturer());
         vaccine.setIntervalBetweenDoses(newVaccine.getIntervalBetweenDoses());
