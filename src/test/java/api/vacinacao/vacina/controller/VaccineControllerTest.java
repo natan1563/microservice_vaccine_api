@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -199,4 +200,24 @@ public class VaccineControllerTest {
 
         verify(vaccineService, times(1)).update(Mockito.any(Vaccine.class),Mockito.eq(vaccine.getId()));
     }
+
+    @Test
+    @DisplayName("Deve excluir uma vacina pelo id")
+    void testExcluirVacina() throws Exception, ResourceNotFoundException {
+        Vaccine vaccine = new Vaccine();
+        vaccine.setId("teste");
+        vaccine.setManufacturer("Pfizer");
+        vaccine.setBatch("LD245");
+        vaccine.setValidateDate(LocalDate.of(2023, 12, 25));
+        vaccine.setAmountOfDose(2);
+        vaccine.setIntervalBetweenDoses(15);
+
+        Mockito.doNothing().when(vaccineService).delete(vaccine.getId());
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/vaccine/" + vaccine.getId()))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        verify(vaccineService, times(1)).delete(vaccine.getId());
+    }
+
 }
