@@ -29,7 +29,6 @@ import java.util.List;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 public class VaccineControllerTest {
