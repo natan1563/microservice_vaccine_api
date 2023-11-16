@@ -1,4 +1,4 @@
-# Projeto Java - README.md
+# Vaccine - Microservice API
 
 Este README fornece instruções detalhadas sobre como configurar, instalar e executar um projeto Java utilizando a JDK 17 e a IDE IntelliJ IDEA. Além disso, inclui informações sobre como baixar o projeto do GitHub [microservice_vaccine_api](https://github.com/natan1563/microservice_vaccine_api) e realizar testes na aplicação.
 
