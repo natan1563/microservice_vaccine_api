@@ -9,8 +9,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,20 +25,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+
 @SpringBootTest
 @AutoConfigureMockMvc
-public class VaccineControllerTest {
+class VaccineControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
     VaccineService vaccineService;
-
-    @InjectMocks
-    private VaccineController vaccineController;
 
     @Autowired
     ObjectMapper objectMapper = new ObjectMapper();
@@ -53,7 +51,7 @@ public class VaccineControllerTest {
 
     @Test
     @DisplayName("Deve retornar uma lista de vacinas cadastradas")
-    void testObterTodas() throws Exception {
+    void should_findAllPatients_ExpectedOkAndCorrectData() throws Exception {
         Vaccine vaccine1 = new Vaccine();
         vaccine1.setManufacturer("Pfizer");
         vaccine1.setBatch("LD245");
@@ -91,7 +89,7 @@ public class VaccineControllerTest {
 
     @Test
     @DisplayName("Deve retornar um Array vazio quando busca não retornar vacinas")
-    void testObterListaEmBranco() throws Exception {
+    void should_findAllPatients_ExpectedOkAndEmptyList() throws Exception {
         List<Vaccine> vaccines = new ArrayList<>();
 
         Mockito.when(vaccineService.getAllVaccines()).thenReturn(vaccines);
@@ -106,7 +104,7 @@ public class VaccineControllerTest {
 
     @Test
     @DisplayName("Deve retornar uma vacina ao buscar pelo id")
-    void testObterPeloId() throws Exception, ResourceNotFoundException {
+    void should_findByIdPatient_ExpectedOkAndCorrectData() throws Exception, ResourceNotFoundException {
         Vaccine vaccine = new Vaccine();
         vaccine.setId("teste");
         vaccine.setManufacturer("Pfizer");
@@ -131,7 +129,7 @@ public class VaccineControllerTest {
 
     @Test
     @DisplayName("Deve retornar um ResourceNotFoundException ao buscar um id inexistente")
-    void testObterPorUmIdInvalido() throws Exception, ResourceNotFoundException {
+    void should_findByIdPatientInvalid_ExpectedNotFound() throws Exception, ResourceNotFoundException {
         String id = "teste";
 
         Mockito.when(vaccineService.getVaccineById(id)).thenThrow(ResourceNotFoundException.class);
@@ -144,7 +142,7 @@ public class VaccineControllerTest {
 
     @Test
     @DisplayName("Deve retornar uma lista de vacinas no endpoint de listagem '/vaccine'")
-    void testShouldBeCreateAnVaccine() throws RegisterBadRequestException, Exception {
+    void should_createPatient_ExpectedCreatedAndCorrectData() throws RegisterBadRequestException, Exception {
         Vaccine vaccine = new Vaccine();
         vaccine.setValidateDate(LocalDate.of(2023, 12, 31));
         vaccine.setManufacturer("Pfizer");
@@ -174,7 +172,7 @@ public class VaccineControllerTest {
 
     @Test
     @DisplayName("Deve atualizar uma vacina")
-    void testAtualizarVacina() throws Exception, ResourceNotFoundException {
+    void should_updatePatient_ExpectedOkAndCorrectData() throws Exception, ResourceNotFoundException {
         Vaccine vaccine = new Vaccine();
         vaccine.setId("teste");
         vaccine.setManufacturer("Pfizer");
@@ -183,7 +181,7 @@ public class VaccineControllerTest {
         vaccine.setAmountOfDose(2);
         vaccine.setIntervalBetweenDoses(15);
 
-        Mockito.when(vaccineService.update(Mockito.any(Vaccine.class),Mockito.anyString())).thenReturn(vaccine);
+        Mockito.when(vaccineService.update(Mockito.any(Vaccine.class), Mockito.anyString())).thenReturn(vaccine);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/vaccine/" + vaccine.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -201,7 +199,7 @@ public class VaccineControllerTest {
 
     @Test
     @DisplayName("Deve excluir uma vacina pelo id")
-    void testExcluirVacina() throws Exception, ResourceNotFoundException {
+    void should_deleteByIdPatientInvalid_ExpectedNoContent() throws Exception, ResourceNotFoundException {
         Vaccine vaccine = new Vaccine();
         vaccine.setId("teste");
         vaccine.setManufacturer("Pfizer");
@@ -210,12 +208,25 @@ public class VaccineControllerTest {
         vaccine.setAmountOfDose(2);
         vaccine.setIntervalBetweenDoses(15);
 
-        Mockito.doNothing().when(vaccineService).delete(vaccine.getId());
+        doNothing().when(vaccineService).delete(vaccine.getId());
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/vaccine/" + vaccine.getId()))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         verify(vaccineService, times(1)).delete(vaccine.getId());
+    }
+
+    @Test
+    @DisplayName("Deve retorna Resource Not Found Exception quando id do paciente que for tentado excluir não existir")
+    void should_deleteByIdPatientInvalid_ExpectedNotFound() throws Exception, ResourceNotFoundException {
+        String id = "teste";
+
+        doThrow(new ResourceNotFoundException()).when(vaccineService).delete(id);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/vaccine/" + id))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+
+        verify(vaccineService, times(1)).delete(id);
     }
 
 }
