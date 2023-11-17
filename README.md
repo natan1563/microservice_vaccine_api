@@ -9,7 +9,6 @@ Certifique-se de ter os seguintes pré-requisitos instalados em seu sistema:
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/)
 
 ## Configuração do Projeto no IntelliJ IDEA
-https://erangel-unime.postman.co/workspace/SpringBoot-APIS~ba414c40-dcc8-44b1-af28-c9f406479095/folder/17428469-a6e74851-6c89-4e4b-912e-343238af80fe?ctx=documentation
 1. Clone o Repositório:
    ```bash
    git clone https://github.com/natan1563/microservice_vaccine_api.git
