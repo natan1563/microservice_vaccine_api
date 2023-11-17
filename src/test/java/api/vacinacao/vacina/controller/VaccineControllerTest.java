@@ -78,12 +78,11 @@ public class VaccineControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].manufacturer").value(vaccine1.getManufacturer()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].batch").value(vaccine1.getBatch()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].validateDate.length()").value(3)) // TO DO: Melhorar
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].validateDate").value(vaccine1.getValidateDate().toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].amountOfDose").value(vaccine1.getAmountOfDose()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].intervalBetweenDoses").value(vaccine1.getIntervalBetweenDoses()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].manufacturer").value(vaccine2.getManufacturer()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].batch").value(vaccine2.getBatch()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].validateDate.length()").value(3)) // TO DO: Melhorar
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].amountOfDose").value(vaccine2.getAmountOfDose()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].intervalBetweenDoses").value(vaccine2.getIntervalBetweenDoses()));
 
@@ -123,7 +122,7 @@ public class VaccineControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.manufacturer").value(vaccine.getManufacturer()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.batch").value(vaccine.getBatch()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.validateDate.length()").value(3))// TO DO: Melhorar
+                .andExpect(MockMvcResultMatchers.jsonPath("$.validateDate").value(vaccine.getValidateDate().toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.amountOfDose").value(vaccine.getAmountOfDose()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.intervalBetweenDoses").value(vaccine.getIntervalBetweenDoses()));
 
@@ -166,7 +165,7 @@ public class VaccineControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(vaccine.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.manufacturer").value(vaccine.getManufacturer()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.batch").value(vaccine.getBatch()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.validateDate.length()").value(3)) // TO DO: Verificar a melhor forma de fazer
+                .andExpect(MockMvcResultMatchers.jsonPath("$.validateDate").value(vaccine.getValidateDate().toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.amountOfDose").value(vaccine.getAmountOfDose()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.intervalBetweenDoses").value(vaccine.getIntervalBetweenDoses()));
 
@@ -193,7 +192,7 @@ public class VaccineControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.manufacturer").value(vaccine.getManufacturer()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.batch").value(vaccine.getBatch()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.validateDate.length()").value(3))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.validateDate").value(vaccine.getValidateDate().toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.amountOfDose").value(vaccine.getAmountOfDose()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.intervalBetweenDoses").value(vaccine.getIntervalBetweenDoses()));
 

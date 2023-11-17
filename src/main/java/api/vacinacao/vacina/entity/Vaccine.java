@@ -1,11 +1,14 @@
 package api.vacinacao.vacina.entity;
 
+import api.vacinacao.vacina.entity.util.DatabaseObject;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -15,7 +18,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Vaccine {
+@Document
+public class Vaccine extends DatabaseObject {
 
     @Id
     private String id;
@@ -27,6 +31,7 @@ public class Vaccine {
     private String batch;
 
     @NotNull(message = "A data de validade da vacina não foi informada!")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     private LocalDate validateDate;
 
     @NotNull(message = "O número de doses da vacina não foi informado!")
