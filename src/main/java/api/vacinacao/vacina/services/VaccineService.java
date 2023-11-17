@@ -43,7 +43,7 @@ public class VaccineService {
 
     @Transactional(readOnly = true)
     public List<Vaccine> getAllVaccines() {
-        return vaccineRepository.findAll();
+        return vaccineRepository.findAllByOrderByCreatedAtDesc();
     }
 
     @Transactional(readOnly = true)
@@ -51,15 +51,13 @@ public class VaccineService {
         return findById(id);
     }
 
-    public Vaccine update(Vaccine newVaccine ,String id) throws ResourceNotFoundException {
+    public Vaccine update(Vaccine newVaccine, String id) throws ResourceNotFoundException {
         Vaccine vaccine = findById(id);
         vaccine.setBatch(newVaccine.getBatch());
-//        vaccine.setValidateDate(newVaccine.getValidateDate());
+        vaccine.setValidateDate(newVaccine.getValidateDate());
         vaccine.setAmountOfDose(newVaccine.getAmountOfDose());
         vaccine.setManufacturer(newVaccine.getManufacturer());
         vaccine.setIntervalBetweenDoses(newVaccine.getIntervalBetweenDoses());
-
-//        BeanUtils.copyProperties(newVaccine, vaccineOptional.get());
         return vaccineRepository.save(vaccine);
     }
 
