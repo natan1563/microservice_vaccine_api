@@ -45,4 +45,20 @@ public class CustomExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleAllExceptions(Exception ex) {
+        if (ex instanceof MethodArgumentNotValidException ||
+                ex instanceof ResourceNotFoundException ||
+                ex instanceof RegisterBadRequestException) {
+            return null;
+        }
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("mensagem", "Ocorreu um erro na aplicação. Nossa equipe de TI já foi notificada e em" +
+                " breve nossos serviços estarão reestabelecidos. Para maiores informações entre em" +
+                " contato pelo nosso WhatsApp 71 99999-9999. Lamentamos o ocorrido!");
+
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
