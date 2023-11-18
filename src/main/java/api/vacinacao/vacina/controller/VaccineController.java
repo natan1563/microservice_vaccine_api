@@ -1,8 +1,8 @@
 package api.vacinacao.vacina.controller;
 
 import api.vacinacao.vacina.entity.Vaccine;
-import api.vacinacao.vacina.exception.RegisterBadRequestException;
-import api.vacinacao.vacina.exception.ResourceNotFoundException;
+import api.vacinacao.vacina.handler.exceptions.RegisterBadRequestException;
+import api.vacinacao.vacina.handler.exceptions.ResourceNotFoundException;
 import api.vacinacao.vacina.services.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

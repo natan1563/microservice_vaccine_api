@@ -1,4 +1,4 @@
-package api.vacinacao.vacina.exception;
+package api.vacinacao.vacina.handler.exceptions;
 
 public class RegisterBadRequestException extends Throwable {
 

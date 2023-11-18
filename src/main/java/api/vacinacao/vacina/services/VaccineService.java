@@ -1,17 +1,14 @@
 package api.vacinacao.vacina.services;
 
 import api.vacinacao.vacina.entity.Vaccine;
-import api.vacinacao.vacina.exception.RegisterBadRequestException;
-import api.vacinacao.vacina.exception.ResourceNotFoundException;
+import api.vacinacao.vacina.handler.exceptions.RegisterBadRequestException;
+import api.vacinacao.vacina.handler.exceptions.ResourceNotFoundException;
 import api.vacinacao.vacina.repository.VaccineRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.ResourceAccessException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

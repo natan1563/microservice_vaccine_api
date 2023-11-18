@@ -1,8 +1,8 @@
 package api.vacinacao.vacina.controller;
 
 import api.vacinacao.vacina.entity.Vaccine;
-import api.vacinacao.vacina.exception.RegisterBadRequestException;
-import api.vacinacao.vacina.exception.ResourceNotFoundException;
+import api.vacinacao.vacina.handler.exceptions.RegisterBadRequestException;
+import api.vacinacao.vacina.handler.exceptions.ResourceNotFoundException;
 import api.vacinacao.vacina.services.VaccineService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
