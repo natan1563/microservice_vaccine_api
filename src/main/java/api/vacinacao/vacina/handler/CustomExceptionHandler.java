@@ -2,6 +2,7 @@ package api.vacinacao.vacina.handler;
 
 import api.vacinacao.vacina.handler.exceptions.RegisterBadRequestException;
 import api.vacinacao.vacina.handler.exceptions.ResourceNotFoundException;
+import api.vacinacao.vacina.handler.exceptions.UnprocessableEntityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

@@ -1,7 +1,7 @@
 package api.vacinacao.vacina.controller;
 
 import api.vacinacao.vacina.entity.Vaccine;
-import api.vacinacao.vacina.handler.UnprocessableEntityException;
+import api.vacinacao.vacina.handler.exceptions.UnprocessableEntityException;
 import api.vacinacao.vacina.handler.exceptions.RegisterBadRequestException;
 import api.vacinacao.vacina.handler.exceptions.ResourceNotFoundException;
 import api.vacinacao.vacina.services.VaccineService;
