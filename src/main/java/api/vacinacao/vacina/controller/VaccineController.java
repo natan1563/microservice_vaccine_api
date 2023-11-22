@@ -1,6 +1,7 @@
 package api.vacinacao.vacina.controller;
 
 import api.vacinacao.vacina.entity.Vaccine;
+import api.vacinacao.vacina.handler.UnprocessableEntityException;
 import api.vacinacao.vacina.handler.exceptions.RegisterBadRequestException;
 import api.vacinacao.vacina.handler.exceptions.ResourceNotFoundException;
 import api.vacinacao.vacina.services.VaccineService;
@@ -21,7 +22,7 @@ public class VaccineController {
     private VaccineService vaccineService;
 
     @PostMapping
-    public ResponseEntity<Vaccine> registerVaccine(@RequestBody @Valid Vaccine vaccine) throws RegisterBadRequestException {
+    public ResponseEntity<Vaccine> registerVaccine(@RequestBody @Valid Vaccine vaccine) throws RegisterBadRequestException, UnprocessableEntityException {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -47,7 +48,7 @@ public class VaccineController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Vaccine> update(@RequestBody @Valid Vaccine newVaccine, @PathVariable String id) throws ResourceNotFoundException {
+    public ResponseEntity<Vaccine> update(@RequestBody @Valid Vaccine newVaccine, @PathVariable String id) throws ResourceNotFoundException, UnprocessableEntityException {
         return ResponseEntity.ok().body(vaccineService.update(newVaccine, id));
     }
 

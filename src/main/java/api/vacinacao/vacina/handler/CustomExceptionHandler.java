@@ -46,6 +46,15 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UnprocessableEntityException.class)
+    public ResponseEntity<Object> handleUnprocessableEntityException(UnprocessableEntityException ex) {
+        Map<String, Object> body = new HashMap<>();
+
+        body.put("mensagem", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllExceptions(Exception ex) {
         if (ex instanceof MethodArgumentNotValidException ||

@@ -1,6 +1,7 @@
 package api.vacinacao.vacina.services;
 
 import api.vacinacao.vacina.entity.Vaccine;
+import api.vacinacao.vacina.handler.UnprocessableEntityException;
 import api.vacinacao.vacina.handler.exceptions.RegisterBadRequestException;
 import api.vacinacao.vacina.handler.exceptions.ResourceNotFoundException;
 import api.vacinacao.vacina.repository.VaccineRepository;
@@ -20,10 +21,18 @@ public class VaccineService {
     @Autowired
     private VaccineRepository vaccineRepository;
 
-    public Vaccine registerVaccine(Vaccine vaccine) throws RegisterBadRequestException {
+    public Vaccine registerVaccine(Vaccine vaccine) throws RegisterBadRequestException, UnprocessableEntityException {
         if (vaccine.getAmountOfDose() > 1 && vaccine.getIntervalBetweenDoses() == null) {
-            throw new RegisterBadRequestException();
+            throw new RegisterBadRequestException("Para vacinas com quantidades de doses maiores que 1 (uma), deve ser informado o intervalo entre doses.");
         }
+
+        Optional<Vaccine> vaccineHasBeenRegistered = vaccineRepository.findOneByManufacturer(vaccine.getManufacturer());
+        if (vaccineHasBeenRegistered.isPresent()) {
+            throw new UnprocessableEntityException(
+                    "A vacina do fornecedor " + vaccine.getManufacturer() + " já foi cadastrada anteriormente."
+            );
+        }
+
         return vaccineRepository.insert(vaccine);
     }
 
@@ -48,8 +57,16 @@ public class VaccineService {
         return findById(id);
     }
 
-    public Vaccine update(Vaccine newVaccine, String id) throws ResourceNotFoundException {
+    public Vaccine update(Vaccine newVaccine, String id) throws ResourceNotFoundException, UnprocessableEntityException {
         Vaccine vaccine = findById(id);
+        Optional<Vaccine> vaccineHasBeenRegistered = vaccineRepository.findOneByManufacturer(vaccine.getManufacturer());
+
+        if (vaccineHasBeenRegistered.isPresent() && vaccine.getManufacturer().equalsIgnoreCase(vaccineHasBeenRegistered.get().getManufacturer())) {
+            throw new UnprocessableEntityException(
+                    "A vacina do fornecedor " + vaccine.getManufacturer() + " já foi cadastrada anteriormente."
+            );
+        }
+
         vaccine.setBatch(newVaccine.getBatch());
         vaccine.setValidateDate(newVaccine.getValidateDate());
         vaccine.setAmountOfDose(newVaccine.getAmountOfDose());
