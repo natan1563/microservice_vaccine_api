@@ -58,4 +58,10 @@ public class VaccineController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAll() {
+        vaccineService.deleteAll();
+        return ResponseEntity.noContent().build();
+    }
+
 }

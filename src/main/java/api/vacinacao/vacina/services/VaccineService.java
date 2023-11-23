@@ -85,6 +85,10 @@ public class VaccineService {
         vaccineRepository.deleteById(id);
     }
 
+    public void deleteAll() {
+        vaccineRepository.deleteAll();
+    }
+
     private Vaccine findById(String id) throws ResourceNotFoundException {
         Optional<Vaccine> vaccine = vaccineRepository.findById(id);
 
