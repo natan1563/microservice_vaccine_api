@@ -22,8 +22,13 @@ public class VaccineService {
     private VaccineRepository vaccineRepository;
 
     public Vaccine registerVaccine(Vaccine vaccine) throws RegisterBadRequestException, UnprocessableEntityException {
-        if (vaccine.getAmountOfDose() > 1 && vaccine.getIntervalBetweenDoses() == null) {
+        boolean intervalBetweenDosesIsEmpty = vaccine.getIntervalBetweenDoses() == null;
+        if (vaccine.getAmountOfDose() > 1 && intervalBetweenDosesIsEmpty) {
             throw new RegisterBadRequestException("Para vacinas com quantidades de doses maiores que 1 (uma), deve ser informado o intervalo entre doses.");
+        } else if (vaccine.getAmountOfDose() == 1 && !intervalBetweenDosesIsEmpty) {
+            throw new RegisterBadRequestException("Para vacinas com quantidades de doses iguais a 1 (um), não poderá haver intervalo entre doses.");
+        } else if (!intervalBetweenDosesIsEmpty && vaccine.getIntervalBetweenDoses() < 0) {
+            throw new RegisterBadRequestException("O intervalo entre doses não pode ser menor que 0 (zero).");
         }
 
         Optional<Vaccine> vaccineHasBeenRegistered = vaccineRepository.findOneByManufacturer(vaccine.getManufacturer());
