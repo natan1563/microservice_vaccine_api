@@ -68,8 +68,9 @@ public class CustomExceptionHandler {
 
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        Map<String, Object> body = new HashMap<>();
+        body.put("mensagem", "Você passou algum dado inválido no corpo");
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
