@@ -66,7 +66,7 @@ public class VaccineService {
         Vaccine vaccine = findById(id);
         Optional<Vaccine> vaccineHasBeenRegistered = vaccineRepository.findOneByManufacturer(newVaccine.getManufacturer());
 
-        if (vaccineHasBeenRegistered.isPresent() && vaccine.getManufacturer().equalsIgnoreCase(vaccineHasBeenRegistered.get().getManufacturer())) {
+        if (vaccineHasBeenRegistered.isPresent() && !vaccine.getManufacturer().equalsIgnoreCase(vaccineHasBeenRegistered.get().getManufacturer())) {
             throw new UnprocessableEntityException(
                     "A vacina do fornecedor " + newVaccine.getManufacturer() + " já foi cadastrada anteriormente."
             );
