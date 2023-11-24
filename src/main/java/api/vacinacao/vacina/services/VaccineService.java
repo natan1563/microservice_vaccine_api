@@ -64,11 +64,11 @@ public class VaccineService {
 
     public Vaccine update(Vaccine newVaccine, String id) throws ResourceNotFoundException, UnprocessableEntityException {
         Vaccine vaccine = findById(id);
-        Optional<Vaccine> vaccineHasBeenRegistered = vaccineRepository.findOneByManufacturer(vaccine.getManufacturer());
+        Optional<Vaccine> vaccineHasBeenRegistered = vaccineRepository.findOneByManufacturer(newVaccine.getManufacturer());
 
         if (vaccineHasBeenRegistered.isPresent() && vaccine.getManufacturer().equalsIgnoreCase(vaccineHasBeenRegistered.get().getManufacturer())) {
             throw new UnprocessableEntityException(
-                    "A vacina do fornecedor " + vaccine.getManufacturer() + " já foi cadastrada anteriormente."
+                    "A vacina do fornecedor " + newVaccine.getManufacturer() + " já foi cadastrada anteriormente."
             );
         }
 
