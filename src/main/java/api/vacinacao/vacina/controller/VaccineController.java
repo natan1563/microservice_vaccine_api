@@ -48,7 +48,7 @@ public class VaccineController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Vaccine> update(@RequestBody @Valid Vaccine newVaccine, @PathVariable String id) throws ResourceNotFoundException, UnprocessableEntityException {
+    public ResponseEntity<Vaccine> update(@RequestBody @Valid Vaccine newVaccine, @PathVariable String id) throws ResourceNotFoundException, UnprocessableEntityException, RegisterBadRequestException {
         return ResponseEntity.ok().body(vaccineService.update(newVaccine, id));
     }
 

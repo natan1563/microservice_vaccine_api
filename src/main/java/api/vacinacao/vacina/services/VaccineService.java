@@ -65,7 +65,16 @@ public class VaccineService {
         return findById(id);
     }
 
-    public Vaccine update(Vaccine newVaccine, String id) throws ResourceNotFoundException, UnprocessableEntityException {
+    public Vaccine update(Vaccine newVaccine, String id) throws ResourceNotFoundException, UnprocessableEntityException, RegisterBadRequestException {
+        boolean intervalBetweenDosesIsEmpty = newVaccine.getIntervalBetweenDoses() == null;
+        if (newVaccine.getAmountOfDose() > 1 && intervalBetweenDosesIsEmpty) {
+            throw new RegisterBadRequestException("Para vacinas com quantidades de doses maiores que 1 (uma), deve ser informado o intervalo entre doses.");
+        } else if (newVaccine.getAmountOfDose() == 1 && !intervalBetweenDosesIsEmpty) {
+            throw new RegisterBadRequestException("Para vacinas com quantidades de doses iguais a 1 (um), não poderá haver intervalo entre doses.");
+        } else if (!intervalBetweenDosesIsEmpty && newVaccine.getIntervalBetweenDoses() < 0) {
+            throw new RegisterBadRequestException("O intervalo entre doses não pode ser menor que 0 (zero).");
+        }
+
         Vaccine vaccine = findById(id);
         Optional<Vaccine> vaccineHasBeenRegistered = vaccineRepository.findFirstByManufacturerIgnoreCase(newVaccine.getManufacturer().trim());
 
