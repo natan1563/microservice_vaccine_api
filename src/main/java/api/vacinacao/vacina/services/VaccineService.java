@@ -31,12 +31,15 @@ public class VaccineService {
             throw new RegisterBadRequestException("O intervalo entre doses não pode ser menor que 0 (zero).");
         }
 
-        Optional<Vaccine> vaccineHasBeenRegistered = vaccineRepository.findOneByManufacturer(vaccine.getManufacturer());
+        Optional<Vaccine> vaccineHasBeenRegistered = vaccineRepository.findFirstByManufacturerIgnoreCase(vaccine.getManufacturer().trim());
         if (vaccineHasBeenRegistered.isPresent()) {
             throw new UnprocessableEntityException(
-                    "A vacina do fornecedor " + vaccine.getManufacturer() + " já foi cadastrada anteriormente."
+                    "A vacina do fornecedor " + vaccine.getManufacturer().trim() + " já foi cadastrada anteriormente."
             );
         }
+
+        vaccine.setManufacturer(vaccine.getManufacturer().trim());
+        vaccine.setBatch(vaccine.getBatch().trim());
 
         return vaccineRepository.insert(vaccine);
     }
@@ -64,18 +67,18 @@ public class VaccineService {
 
     public Vaccine update(Vaccine newVaccine, String id) throws ResourceNotFoundException, UnprocessableEntityException {
         Vaccine vaccine = findById(id);
-        Optional<Vaccine> vaccineHasBeenRegistered = vaccineRepository.findOneByManufacturer(newVaccine.getManufacturer());
+        Optional<Vaccine> vaccineHasBeenRegistered = vaccineRepository.findFirstByManufacturerIgnoreCase(newVaccine.getManufacturer().trim());
 
-        if (vaccineHasBeenRegistered.isPresent() && !vaccine.getManufacturer().equalsIgnoreCase(vaccineHasBeenRegistered.get().getManufacturer())) {
+        if (vaccineHasBeenRegistered.isPresent() && !vaccine.getManufacturer().trim().equalsIgnoreCase(vaccineHasBeenRegistered.get().getManufacturer().trim())) {
             throw new UnprocessableEntityException(
-                    "A vacina do fornecedor " + newVaccine.getManufacturer() + " já foi cadastrada anteriormente."
+                    "A vacina do fornecedor " + newVaccine.getManufacturer().trim() + " já foi cadastrada anteriormente."
             );
         }
 
-        vaccine.setBatch(newVaccine.getBatch());
+        vaccine.setBatch(newVaccine.getBatch().trim());
         vaccine.setValidateDate(newVaccine.getValidateDate());
         vaccine.setAmountOfDose(newVaccine.getAmountOfDose());
-        vaccine.setManufacturer(newVaccine.getManufacturer());
+        vaccine.setManufacturer(newVaccine.getManufacturer().trim());
         vaccine.setIntervalBetweenDoses(newVaccine.getIntervalBetweenDoses());
         return vaccineRepository.save(vaccine);
     }

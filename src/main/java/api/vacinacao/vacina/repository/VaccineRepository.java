@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface VaccineRepository extends MongoRepository<Vaccine, String> {
     List<Vaccine> findAllByOrderByCreatedAtDesc();
 
-    Optional<Vaccine> findOneByManufacturer(String VaccineName);
+    Optional<Vaccine> findFirstByManufacturerIgnoreCase(String VaccineName);
 }
